@@ -1,7 +1,7 @@
 # Fraud Detection for E-Commerce and Banking Transactions
 
 
-### Project Overview:
+## Project Overview:
 
 - This project develops robust fraud detection models for e-commerce and credit card transactions using advanced machine learning and geolocation analysis. The system ensures accurate fraud detection, real-time monitoring, and reporting to reduce financial losses and build trust with customers and institutions.
 ---
