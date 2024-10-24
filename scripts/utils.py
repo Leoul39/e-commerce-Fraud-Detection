@@ -92,19 +92,34 @@ def bivariant_plot(data,columns):
         logger.error(f"An error has occured: {e}")
         return None
 def geographical_plot(data1,data2):
-    fraud_by_country= data1[data1['class']==1].groupby('country').size().reset_index(name='count')
-    world_plot=data2.merge(fraud_by_country,left_on='ADMIN',right_on='country',how='left')
-    world_plot.fillna(0,inplace=True)
-    norm = cl.SymLogNorm(linthresh=500, linscale=1.0, vmin=50, vmax=6000)
-    fig, ax = plt.subplots(1, 1, figsize=(15, 10))
-    world_plot.boundary.plot(ax=ax, linewidth=1)
-    world_plot.plot(column='count', ax=ax, legend=True,
-            legend_kwds={'label': "Count by Country",
-                            'orientation': "horizontal"},
-            cmap='Greens',norm=norm
-            )
-    plt.title("Country Counts Heatmap")
-    plt.show()
+    """
+    This function lays the world map and shows the amount of fraudulent activity by countries, differentiating
+    them with intensity.
+
+    Parameter:
+        data1- fraud dataset
+        data2- world dataset
+    Returns:
+        geographical plot showing fraudulent activities
+    """
+    try:
+        data1['country']=data1['country'].replace({'United States':'United States of America'})
+        fraud_by_country= data1[data1['class']==1].groupby('country').size().reset_index(name='count')
+        world_plot=data2.merge(fraud_by_country,left_on='ADMIN',right_on='country',how='left')
+        world_plot.fillna(0,inplace=True)
+        norm = cl.SymLogNorm(linthresh=500, linscale=1.0, vmin=50, vmax=6000)
+        logger.info(f'Plotting the geographical plot for fraudulent activities')
+        fig, ax = plt.subplots(1, 1, figsize=(15, 10))
+        world_plot.boundary.plot(ax=ax, linewidth=1)
+        world_plot.plot(column='count', ax=ax, legend=True,
+                legend_kwds={'label': "Count by Country",
+                                'orientation': "horizontal"},
+                cmap='Greens',norm=norm
+                )
+        plt.title("Country Counts Heatmap")
+        plt.show()
+    except Exception as e:
+        logger.error(f"An error has occcured: {e}")
 def feature_engineering(fraud_df):
     """
     This function generates many features from already existing features 
