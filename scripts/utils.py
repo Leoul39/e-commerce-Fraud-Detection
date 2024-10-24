@@ -78,6 +78,7 @@ def bivariant_plot(data,columns):
     plt.show()
 def geographical_plot(data1,data2):
     fraud_by_country= data1[data1['class']==1].groupby('country').size().reset_index(name='count')
+    fraud_by_country['country']=fraud_by_country['country'].replace({'United States':'United States of America'})
     world_plot=data2.merge(fraud_by_country,left_on='ADMIN',right_on='country',how='left')
     world_plot.fillna(0,inplace=True)
     norm = cl.SymLogNorm(linthresh=500, linscale=1.0, vmin=50, vmax=6000)
